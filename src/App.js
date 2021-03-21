@@ -29,7 +29,7 @@ function App() {
     <div className="app">
       {user ? (
         <>
-          <Header userPhoto={user.photoURL} />
+          <Header userPhoto={user?.photoURL} />
           <div className="app__main">
             <Sidebar />
             <FilesView />
