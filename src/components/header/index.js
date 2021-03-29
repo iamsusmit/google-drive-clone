@@ -8,11 +8,14 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 import SettingsIcon from "@material-ui/icons/Settings";
 import AppsIcon from "@material-ui/icons/Apps";
+import Cookies from "js-cookie";
 
 const index = ({ userPhoto }) => {
   const handleAuthenticaton = () => {
     const response = window.confirm("Do you want to Sign Out?");
     if (response) {
+      Cookies.remove("userEmail");
+      sessionStorage.removeItem("user");
       window.location.reload();
     }
   };

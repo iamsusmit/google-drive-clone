@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useState } from "react";
+import React, { lazy, Suspense, useState, useEffect } from "react";
 import {
   PaneDirective,
   PanesDirective,
@@ -15,11 +15,24 @@ import Sidebar from "./components/sidebar";
 import SideIcons from "./components/sideIcons";
 import GDriveLogo from "./media/google-drive-logo.png";
 import { auth, provider } from "./firebase";
+import Cookies from "js-cookie";
 
 const LazyFileView = lazy(() => import("./components/filesView/FilesView"));
 
 function App() {
   const [user, setUser] = useState();
+
+  useEffect(() => {
+    //it tells us whether page has been refreshed or not
+    if (window.performance) {
+      if (performance.navigation.type === 1) {
+        var cookies = Cookies.get("userEmail");
+        if (cookies != undefined) {
+          setUser(JSON.parse(sessionStorage.getItem("user"))); //use JSON.parse for object datatype
+        }
+      }
+    }
+  }, []);
 
   const handleLogin = () => {
     if (!user) {
@@ -27,6 +40,8 @@ function App() {
         .signInWithPopup(provider)
         .then((result) => {
           setUser(result.user);
+          sessionStorage.setItem("user", JSON.stringify(result.user)); //use JSON.stringify for object datatype
+          Cookies.set("userEmail", result.user.email); //since expiry is not set,it is a session cookie;hence n duplicate tab you have to re-login
         })
         .catch((error) => {
           alert(error.message);
