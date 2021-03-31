@@ -21,6 +21,7 @@ const LazyFileView = lazy(() => import("./components/filesView/FilesView"));
 
 function App() {
   const [user, setUser] = useState();
+  const [currentHour, setCurrentHour] = useState();
 
   useEffect(() => {
     //it tells us whether page has been refreshed or not
@@ -32,7 +33,15 @@ function App() {
         }
       }
     }
+    setCurrentHour(new Date().getHours());
   }, []);
+
+  useEffect(() => {
+    //if user is logged in then display user name in tab
+    if (user) {
+      document.title = user?.displayName + " - Google Drive";
+    }
+  }, [user]);
 
   const handleLogin = () => {
     if (!user) {
@@ -41,7 +50,17 @@ function App() {
         .then((result) => {
           setUser(result.user);
           sessionStorage.setItem("user", JSON.stringify(result.user)); //use JSON.stringify for object datatype
-          Cookies.set("userEmail", result.user.email); //since expiry is not set,it is a session cookie;hence n duplicate tab you have to re-login
+          Cookies.set("userEmail", result.user.email); //since expiry is not set,it is a session cookie;hence in duplicate tab you have to re-login
+          //Greeting based on the time.
+          alert(
+            "Good " +
+              ((currentHour < 12 && "Morning") ||
+                (currentHour < 18 && "Afternoon") ||
+                "Evening") +
+              "," +
+              result.user?.displayName +
+              ".\nWelcome to your G-Drive."
+          );
         })
         .catch((error) => {
           alert(error.message);

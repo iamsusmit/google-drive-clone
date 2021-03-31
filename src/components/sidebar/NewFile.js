@@ -70,7 +70,7 @@ const NewFile = () => {
               fileUrl: url,
               size: snapshot._delegate.bytesTransferred,
             });
-
+            document.title = "File Uploaded";
             setUploading(false);
             setOpen(false);
             setFile(null);
