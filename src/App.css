@@ -1,5 +1,6 @@
 .app__main {
     display: flex;
+    background-image: linear-gradient(rgba(240, 247, 177,1),rgba(198, 228, 31,0));
 }
 
 .app__login {

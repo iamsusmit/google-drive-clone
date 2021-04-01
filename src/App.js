@@ -22,6 +22,7 @@ const LazyFileView = lazy(() => import("./components/filesView/FilesView"));
 function App() {
   const [user, setUser] = useState();
   const [currentHour, setCurrentHour] = useState();
+  const [color, setColor] = useState();
 
   useEffect(() => {
     //it tells us whether page has been refreshed or not
@@ -92,8 +93,30 @@ function App() {
     );
   };
 
+  //on every click,bg-color gets changed
+  const handleClick = () => {
+    let colorPalette = [
+        "rgba(234, 250, 211,0.671)",
+        "rgba(239, 248, 198,0.671)",
+        "rgba(173, 145, 114, 0.671)",
+        "rgba(133, 184, 174, 0.671)",
+        "rgba(89, 132, 168, 0.671)",
+        "rgba(203, 152, 223, 0.671)",
+        "rgba(235, 173, 173, 0.671)",
+        "rgba(134, 204, 158, 0.671)",
+        "rgba(144, 135, 226, 0.671)",
+        "rgba(187, 112, 181, 0.671)",
+      ],
+      index = Math.floor(Math.random() * 10); // returns a random integer from 0 to 9
+    setColor(colorPalette[index]);
+  };
+
   return (
-    <div className="app">
+    <div
+      className="app"
+      onClick={() => handleClick()}
+      style={{ backgroundColor: color }}
+    >
       {user ? (
         <>
           <Header userPhoto={user?.photoURL} />
