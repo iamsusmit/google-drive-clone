@@ -51,7 +51,10 @@ function App() {
           setUser(result.user);
           sessionStorage.setItem("user", JSON.stringify(result.user)); //use JSON.stringify for object datatype
           Cookies.set("userEmail", result.user.email); //since expiry is not set,it is a session cookie;hence in duplicate tab you have to re-login
-          //Greeting based on the time.
+
+          let lastLoginTime = localStorage.getItem("loginTime"); //accessing last login time
+          
+          //Greeting based on the time & last login.
           alert(
             "Good " +
               ((currentHour < 12 && "Morning") ||
@@ -59,8 +62,12 @@ function App() {
                 "Evening") +
               "," +
               result.user?.displayName +
+              (lastLoginTime != null
+                ? ".\nYou last logged in at " + lastLoginTime
+                : ".\nThis is your first time visit") +
               ".\nWelcome to your G-Drive."
           );
+          localStorage.setItem("loginTime", new Date()); //setting last login time
         })
         .catch((error) => {
           alert(error.message);
