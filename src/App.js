@@ -16,6 +16,7 @@ import SideIcons from "./components/sideIcons";
 import GDriveLogo from "./media/google-drive-logo.png";
 import { auth, provider } from "./firebase";
 import Cookies from "js-cookie";
+import Particles from "react-particles-js";
 
 const LazyFileView = lazy(() => import("./components/filesView/FilesView"));
 
@@ -54,7 +55,7 @@ function App() {
           Cookies.set("userEmail", result.user.email); //since expiry is not set,it is a session cookie;hence in duplicate tab you have to re-login
 
           let lastLoginTime = localStorage.getItem("loginTime"); //accessing last login time
-          
+
           //Greeting based on the time & last login.
           alert(
             "Good " +
@@ -64,7 +65,7 @@ function App() {
               "," +
               result.user?.displayName +
               (lastLoginTime != null
-                ? ".\nYou last logged in at " + lastLoginTime
+                ? ".\nYou last logged in " + lastLoginTime
                 : ".\nThis is your first time visit") +
               ".\nWelcome to your G-Drive."
           );
@@ -137,10 +138,34 @@ function App() {
           </div>
         </>
       ) : (
-        <div className="app__login">
-          <img src={GDriveLogo} alt="Google Drive" />
-          <button onClick={handleLogin}>Log in to Google Drive</button>
-        </div>
+        <>
+          <div className="app__login">
+            <img src={GDriveLogo} alt="Google Drive" />
+            <button onClick={handleLogin}>Log in to Google Drive</button>
+          </div>
+          {/* Animation */}
+          <Particles
+            params={{
+              particles: {
+                number: {
+                  value: 80,
+                },
+                size: {
+                  value: 4,
+                },
+              },
+              interactivity: {
+                events: {
+                  onhover: {
+                    enable: true,
+                    mode: "repulse",
+                  },
+                },
+              },
+            }}
+            className="particles"
+          />
+        </>
       )}
     </div>
   );
